@@ -36,6 +36,13 @@ const list = [
     image: "https://www.course-api.com/images/tours/tour-5.jpeg",
     cost: "$2,595",
   },
+  {
+    id: 6,
+    nameTour: "Best of Poland in 10 Days Tour",
+    text: "Starting in the colorful port city of Gdańsk, you'll escape the crowds and embrace the understated elegance of ready-for-prime-time Poland for 10 days. With an expert Rick Steves guide at your side, y...read more",
+    image: "https://www.course-api.com/images/tours/tour-5.jpeg",
+    cost: "$2,595",
+  },
 ];
 
 export default function Home() {
