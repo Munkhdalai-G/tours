@@ -54,17 +54,42 @@ export default function Home() {
 }
 
 const Tours = () => {
+  const [tours, setTours] = useState(list);
+
+  const removeTour = (id) => {
+    setTours((prev) => prev.filter((tour) => tour.id !== id));
+  };
+
+  const resetTours = () => {
+    setTours(list);
+  };
+
+  if (tours.length === 0) {
+    return (
+      <div className="flex flex-col items-center mt-10">
+        <h2 className="text-xl font-semibold mb-4">No tours left</h2>
+        <button
+          onClick={resetTours}
+          className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600"
+        >
+          Reset Tours
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className=" flex justify-center mt-10 mb-10">
-      <div className=" grid grid-cols-3 gap-8   ">
-        {list.map(({ id, nameTour, text, image, cost, onSelect }) => (
+    <div className="flex justify-center mt-10 mb-10">
+      <div className="grid grid-cols-3 gap-8">
+        {tours.map(({ id, nameTour, text, image, cost }) => (
           <ToursList
             key={id}
+            id={id}
             nameTour={nameTour}
             text={text}
             image={image}
             cost={cost}
-            onSelect={onSelect}
+            onRemove={removeTour}
           />
         ))}
       </div>
@@ -72,39 +97,37 @@ const Tours = () => {
   );
 };
 
-const ToursList = ({ nameTour, text, image, cost, id }) => {
+const ToursList = ({ id, nameTour, text, image, cost, onRemove }) => {
   const [expand, setExpand] = useState(false);
-  const newText = !expand ? text?.slice(0, 200) : text;
-  const onSelect = () => {
-    console.log("hi");
-  };
+  const newText = !expand ? text.slice(0, 200) : text;
 
   return (
-    <div className="flex flex-col shadow-2xl/25 w-75 h-min ">
+    <div className="flex flex-col shadow-2xl/25 w-75 h-min">
       <div className="relative flex justify-end">
-        <img className="w-75 h-75" src={image} alt="profile" />
-        <span className="absolute bg-green-500 text-[15px] text-white">
+        <img className="w-75 h-75" src={image} alt={nameTour} />
+        <span className="absolute bg-green-500 text-[15px] text-white px-2">
           {cost}
         </span>
       </div>
 
       <div className="p-2 text-black">
-        <h2 className=" font-semibold  text-center">{nameTour}</h2>
+        <h2 className="font-semibold text-center">{nameTour}</h2>
 
-        <p className="pl-5 pr-5 pt-5 text-gray-500 text-sm ">
+        <p className="pl-5 pr-5 pt-5 text-gray-500 text-sm">
           {newText}
           <span
             onClick={() => setExpand(!expand)}
-            className="text-green-700 text-sm font-medium  "
+            className="text-green-700 text-sm font-medium cursor-pointer"
           >
-            {expand ? "Show Less" : "...Read More"}
+            {expand ? " Show Less" : " ...Read More"}
           </span>
         </p>
       </div>
+
       <div className="flex justify-center">
         <button
-          className="text-green-500 border-1 w-65 rounded-md  hover:bg-green-500 hover:text-white mb-3"
-          onClick={onSelect}
+          className="text-green-500 border border-green-500 w-65 rounded-md hover:bg-green-500 hover:text-white mb-3"
+          onClick={() => onRemove(id)}
         >
           Not Interested
         </button>
